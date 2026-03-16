@@ -45,12 +45,26 @@ namespace BankTests
                 account.Debit(debitAmount);
             }
             catch (System.ArgumentOutOfRangeException e)
-            
+            { 
                 StringAssert.Contains(e.Message, "Сумма снятия превышает баланс");
                 return;
             }
 
             Assert.Fail("Ожидаемое исключение ArgumentOutOfRangeException не было выброшено");
+        }
+
+        [TestMethod]
+        public void Credit_WithValidAmount_UpdatesBalance()
+        {
+            double beginningBalance = 11.99;
+            double creditAmount = 5.00;
+            double expected = 16.99;
+            BankAccount account = new BankAccount("Mr. Roman Abramovich", beginningBalance);
+
+            account.Credit(creditAmount);
+
+            double actual = account.Balance;
+            Assert.AreEqual(expected, actual, 0.001, "Balance after credit is incorrect");
         }
     }
 }
