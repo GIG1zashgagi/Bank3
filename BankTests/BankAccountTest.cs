@@ -66,5 +66,25 @@ namespace BankTests
             double actual = account.Balance;
             Assert.AreEqual(expected, actual, 0.001, "Balance after credit is incorrect");
         }
+
+        [TestMethod]
+        public void Credit_WhenAmountIsLessThanZero_ShouldThrowArgumentOutOfRange()
+        {
+            double beginningBalance = 11.99;
+            double creditAmount = -5.00;
+            BankAccount account = new BankAccount("Mr. Roman Abramovich", beginningBalance);
+
+            try
+            {
+                account.Credit(creditAmount);
+            }
+            catch (System.ArgumentOutOfRangeException e)
+            {
+                StringAssert.Contains(e.Message, "Сумма внесения не может быть отрицательной");
+                return;
+            }
+
+            Assert.Fail("Ожидаемое исключение ArgumentOutOfRangeException не было выброшено");
+        }
     }
 }
