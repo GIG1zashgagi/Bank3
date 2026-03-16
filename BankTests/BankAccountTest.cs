@@ -86,5 +86,19 @@ namespace BankTests
 
             Assert.Fail("Ожидаемое исключение ArgumentOutOfRangeException не было выброшено");
         }
+
+        [TestMethod]
+        public void Credit_WithZeroAmount_DoesNotChangeBalance()
+        {
+            double beginningBalance = 11.99;
+            double creditAmount = 0.00;
+            double expected = 11.99;
+            BankAccount account = new BankAccount("Mr. Roman Abramovich", beginningBalance);
+
+            account.Credit(creditAmount);
+
+            double actual = account.Balance;
+            Assert.AreEqual(expected, actual, 0.001, "Balance should not change with zero amount");
+        }
     }
 }
