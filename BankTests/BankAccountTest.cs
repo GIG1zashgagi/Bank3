@@ -23,17 +23,34 @@ namespace BankTests
         [TestMethod]
         public void Debit_WhenAmountIsLessThanZero_ShouldThrowArgumentOutOfRange()
         {
-            // Arrange
             double beginningBalance = 11.99;
             double debitAmount = -100.00;
             BankAccount account = new BankAccount("Mr. Roman Abramovich", beginningBalance);
 
-            // Act and assert
             var ex = Assert.ThrowsException<System.ArgumentOutOfRangeException>(
                 () => account.Debit(debitAmount));
 
-            // Assert
             StringAssert.Contains(ex.Message, "Сумма снятия не может быть отрицательной");
+        }
+
+        [TestMethod]
+        public void Debit_WhenAmountIsMoreThanBalance_ShouldThrowArgumentOutOfRange()
+        {
+            double beginningBalance = 11.99;
+            double debitAmount = 20.0;
+            BankAccount account = new BankAccount("Mr. Roman Abramovich", beginningBalance);
+
+            try
+            {
+                account.Debit(debitAmount);
+            }
+            catch (System.ArgumentOutOfRangeException e)
+            
+                StringAssert.Contains(e.Message, "Сумма снятия превышает баланс");
+                return;
+            }
+
+            Assert.Fail("Ожидаемое исключение ArgumentOutOfRangeException не было выброшено");
         }
     }
 }
